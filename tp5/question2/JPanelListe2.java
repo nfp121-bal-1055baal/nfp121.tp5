@@ -86,7 +86,6 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
             boolean res = false;
             if (ae.getSource() == boutonRechercher || ae.getSource() == saisie) {
                 res = liste.contains(saisie.getText());
-                Integer occur = occurrences.get(saisie.getText());
                 afficheur.setText("résultat de la recherche de : "
                     + saisie.getText() + " -->  " + res);
             } else if (ae.getSource() == boutonRetirer) {
@@ -102,7 +101,7 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
                 if (occur != null)
                     afficheur.setText(" -->  " + occur + " occurrence(s)");
                 else
-                    afficheur.setText(" -->  0 ");
+                    afficheur.setText(" -->  ??? ");
             }
             texte.setText(liste.toString());
 
@@ -134,12 +133,16 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
         boolean resultat = false;
 		Iterator<String> it=liste.iterator();
 		while(it.hasNext()){
-			if(it.next().startsWith(prefixe)){
+		    String s = it.next();
+			if(s.startsWith(prefixe)){
 				resultat=true;
+				
 				it.remove();
+				Integer i = occurrences.get(s);
+				occurrences.remove(s);
+				occurrences.put(s,i-1);
 			}
 		}
-		occurrences = Chapitre2CoreJava2.occurrencesDesMots(liste);
 		texte.setText(liste.toString());
         return resultat;
     }

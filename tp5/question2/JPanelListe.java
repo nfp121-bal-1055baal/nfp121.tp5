@@ -5,10 +5,12 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import java.util.Collections;
+import java.lang.Comparable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+
 import java.util.Map;
 
 public class JPanelListe extends JPanel implements ActionListener, ItemListener {
@@ -63,8 +65,10 @@ public class JPanelListe extends JPanel implements ActionListener, ItemListener 
         add(texte, "Center");
 
         boutonRechercher.addActionListener(this);
-        // à compléter;
-
+        boutonRetirer.addActionListener(this);
+		boutonOccurrences.addActionListener(this);
+		ordreCroissant.addItemListener(this);
+		ordreDecroissant.addItemListener(this);
     }
 
     /** ne pas modifier les affichages, les classes de tests en ont besoin ... */
@@ -84,7 +88,7 @@ public class JPanelListe extends JPanel implements ActionListener, ItemListener 
                 if (occur != null)
                     afficheur.setText(" -->  " + occur + " occurrence(s)");
                 else
-                    afficheur.setText(" -->  ??? ");
+                    afficheur.setText(" -->  0 ");
             }
             texte.setText(liste.toString());
 
@@ -94,20 +98,38 @@ public class JPanelListe extends JPanel implements ActionListener, ItemListener 
     }
 
     public void itemStateChanged(ItemEvent ie) {
-        if (ie.getSource() == ordreCroissant)
-            ;// à compléter
-        else if (ie.getSource() == ordreDecroissant)
-            ;// à compléter
+        LinkedList<String> temp=null;
+		if (ie.getSource() == ordreCroissant){
+			
+			Collections.sort(liste);
+		}
+            
+        else if (ie.getSource() == ordreDecroissant){
+			
+			Collections.sort(liste,new listComparator());
+		}
 
         texte.setText(liste.toString());
     }
 
     private boolean retirerDeLaListeTousLesElementsCommencantPar(String prefixe) {
         boolean resultat = false;
-        // à compléter
-        // à compléter
-        // à compléter
+		Iterator<String> it=liste.iterator();
+		while(it.hasNext()){
+			if(it.next().startsWith(prefixe)){
+				resultat=true;
+				it.remove();
+			}
+		}
+		occurrences = Chapitre2CoreJava2.occurrencesDesMots(liste);
+		texte.setText(liste.toString());
         return resultat;
     }
+	
+	private class listComparator<String> implements Comparator<String>{
+		public int compare(String s1,String s2){
+			return ((Comparable)s2).compareTo((Comparable)s1);
+		}
+	}
 
 }

@@ -66,7 +66,9 @@ public class IHMListeTest extends junit.framework.TestCase{
             //Rechercher("Java");
             JTextField saisie = (JTextField)subSubComponents[1];
             saisie.setText("Java");
-
+			synchronized(this){
+				this.wait(100);
+			}
             JButton button = ((JButton)boutons[0]);
             button.doClick();
 
@@ -76,7 +78,9 @@ public class IHMListeTest extends junit.framework.TestCase{
             //Rechercher("Java");
             saisie = (JTextField)subSubComponents[1];
             saisie.setText("Java2");
-
+			synchronized(this){
+				this.wait(100);
+			}
             button.doClick();
 
             res = (JLabel)subSubComponents[0];
@@ -118,7 +122,9 @@ public class IHMListeTest extends junit.framework.TestCase{
             //Rechercher("Java");
             JTextField saisie = (JTextField)subSubComponents[1];
             saisie.setText("you");
-
+			synchronized(this){
+				this.wait(100);
+			}
             JButton button = ((JButton)boutons[5]);
             button.doClick();
 
@@ -170,7 +176,9 @@ public class IHMListeTest extends junit.framework.TestCase{
 
             JTextField saisie = (JTextField)subSubComponents[1];
             saisie.setText("you");
-
+			synchronized(this){
+				this.wait(1000);
+			}
             Point location = boutons[1].getLocationOnScreen();
             mouseMoveAndClick(location.x+(boutons[1].getWidth()/2),location.y+(boutons[1].getHeight()/2));
 
@@ -179,13 +187,17 @@ public class IHMListeTest extends junit.framework.TestCase{
 
             saisie = (JTextField)subSubComponents[1];
             saisie.setText("you");
-
+			synchronized(this){
+				this.wait(100);
+			}
             location = boutons[0].getLocationOnScreen();
             mouseMoveAndClick(location.x+(boutons[0].getWidth()/2),location.y+(boutons[0].getHeight()/2));
 
             res = (JLabel)subSubComponents[0];
             assertTrue("retrait est-il inopérant ??? ",res.getText().endsWith("false"));
-
+			synchronized(this){
+				this.wait(100);
+			}
             location = boutons[1].getLocationOnScreen();
             mouseMoveAndClick(location.x+(boutons[1].getWidth()/2),location.y+(boutons[1].getHeight()/2));
 
@@ -229,7 +241,9 @@ public class IHMListeTest extends junit.framework.TestCase{
 
             JTextField saisie = (JTextField)subSubComponents[1];
             saisie.setText("lin");
-
+			synchronized(this){
+				this.wait(1000);
+			}
  
             retirer.doClick();
             robot.delay(300);

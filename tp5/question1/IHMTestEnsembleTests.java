@@ -139,6 +139,9 @@ public class IHMTestEnsembleTests extends junit.framework.TestCase{
         // 		Point location = subComponents[1].getLocationOnScreen();
         // 		mouseMoveAndClickClick(location.x,location.y);
         // 		typeLine(str, robot, false);
+		synchronized(this){
+			this.wait(100);
+		}
     }
 
     private void placerPourE2(String str) throws Exception{
@@ -152,6 +155,9 @@ public class IHMTestEnsembleTests extends junit.framework.TestCase{
         // 		Point location = subComponents[1].getLocationOnScreen();
         // 		mouseMoveAndClickClick(location.x,location.y);
         // 		typeLine(str, robot, false);
+		synchronized(this){
+			this.wait(100);
+		}
     }
 
     private void unionE1_E2() throws Exception{
@@ -164,7 +170,9 @@ public class IHMTestEnsembleTests extends junit.framework.TestCase{
         // 		ActionListener[] listeners = union.getActionListeners();
         // 		assertTrue(listeners.length==1);
         //     listeners[0].actionPerformed(null);
-
+		synchronized(this){
+			this.wait(100);
+		}
         Point location = subComponents[1].getLocationOnScreen();
         mouseMoveAndClick(location.x+(subComponents[1].getWidth()/2),location.y+(subComponents[1].getHeight()/2));
     }
@@ -179,7 +187,9 @@ public class IHMTestEnsembleTests extends junit.framework.TestCase{
         // 		ActionListener[] listeners = inter.getActionListeners();
         // 		assertTrue(listeners.length==1);
         //     listeners[0].actionPerformed(null);
-
+		synchronized(this){
+			this.wait(100);
+		}
         Point location = subComponents[2].getLocationOnScreen();
         mouseMoveAndClick(location.x+(subComponents[2].getWidth()/2),location.y+(subComponents[2].getHeight()/2));
     }
@@ -194,7 +204,9 @@ public class IHMTestEnsembleTests extends junit.framework.TestCase{
         // 		ActionListener[] listeners = diff.getActionListeners();
         // 		assertTrue(listeners.length==1);
         //     listeners[0].actionPerformed(null);
-
+		synchronized(this){
+			this.wait(100);
+		}
         Point location = subComponents[3].getLocationOnScreen();
         mouseMoveAndClick(location.x+(subComponents[3].getWidth()/2),location.y+(subComponents[3].getHeight()/2));
     }
@@ -209,6 +221,9 @@ public class IHMTestEnsembleTests extends junit.framework.TestCase{
         // 		ActionListener[] listeners = diffSym.getActionListeners();
         // 		assertTrue(listeners.length==1);
         //     listeners[0].actionPerformed(null);
+		synchronized(this){
+			this.wait(100);
+		}
         Point location = subComponents[4].getLocationOnScreen();
         mouseMoveAndClick(location.x+(subComponents[4].getWidth()/2),location.y+(subComponents[4].getHeight()/2));
     }

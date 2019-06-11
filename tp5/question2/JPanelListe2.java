@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Stack;
 
 public class JPanelListe2 extends JPanel implements ActionListener, ItemListener {
 
@@ -29,15 +30,15 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
 
     private JButton boutonAnnuler = new JButton("annuler");
 
-    private TextArea texte = new TextArea();
+    private static TextArea texte = new TextArea();
 
-    private List<String> liste;
-    private Map<String, Integer> occurrences;
-
+    private static List<String> liste;
+    private static Map<String, Integer> occurrences;
+	private static Stack<List<String>> states;
     public JPanelListe2(List<String> liste, Map<String, Integer> occurrences) {
         this.liste = liste;
         this.occurrences = occurrences;
-
+		states = new Stack<List<String>>();
         cmd.setLayout(new GridLayout(3, 1));
 
         cmd.add(afficheur);
@@ -67,7 +68,16 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
         add(texte, "Center");
 
         boutonRechercher.addActionListener(this);
-        // à compléter;
+        boutonRetirer.addActionListener(this);
+		boutonOccurrences.addActionListener(this);
+		ordreCroissant.addItemListener(this);
+		ordreDecroissant.addItemListener(this);
+        boutonAnnuler.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(!states.isEmpty())
+					annuler();
+			}
+		});
 
     }
 
@@ -80,17 +90,19 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
                 afficheur.setText("résultat de la recherche de : "
                     + saisie.getText() + " -->  " + res);
             } else if (ae.getSource() == boutonRetirer) {
+				List<String> s = new LinkedList<String>();
+				s.addAll(liste);
+				states.push(s);
                 res = retirerDeLaListeTousLesElementsCommencantPar(saisie
                     .getText());
-                afficheur
-                .setText("résultat du retrait de tous les éléments commençant par -->  "
+                afficheur.setText("résultat du retrait de tous les éléments commençant par -->  "
                     + saisie.getText() + " : " + res);
             } else if (ae.getSource() == boutonOccurrences) {
                 Integer occur = occurrences.get(saisie.getText());
                 if (occur != null)
                     afficheur.setText(" -->  " + occur + " occurrence(s)");
                 else
-                    afficheur.setText(" -->  ??? ");
+                    afficheur.setText(" -->  0 ");
             }
             texte.setText(liste.toString());
 
@@ -100,20 +112,48 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
     }
 
     public void itemStateChanged(ItemEvent ie) {
-        if (ie.getSource() == ordreCroissant)
-        ;// à compléter
-        else if (ie.getSource() == ordreDecroissant)
-        ;// à compléter
+        LinkedList<String> temp=null;
+		if (ie.getSource() == ordreCroissant){
+			List<String> s = new LinkedList<String>();
+			s.addAll(liste);
+			states.push(s);
+			Collections.sort(liste);
+		}
+            
+        else if (ie.getSource() == ordreDecroissant){
+			List<String> s = new LinkedList<String>();
+			s.addAll(liste);
+			states.push(s);
+			Collections.sort(liste,new listComparator());
+		}
 
         texte.setText(liste.toString());
     }
 
     private boolean retirerDeLaListeTousLesElementsCommencantPar(String prefixe) {
         boolean resultat = false;
-        // à compléter
-        // à compléter
-        // à compléter
+		Iterator<String> it=liste.iterator();
+		while(it.hasNext()){
+			if(it.next().startsWith(prefixe)){
+				resultat=true;
+				it.remove();
+			}
+		}
+		occurrences = Chapitre2CoreJava2.occurrencesDesMots(liste);
+		texte.setText(liste.toString());
         return resultat;
     }
+	
+	private class listComparator<String> implements Comparator<String>{
+		public int compare(String s1,String s2){
+			return ((Comparable)s2).compareTo((Comparable)s1);
+		}
+	}
+	
+	private static final void annuler(){
+		liste=states.pop();
+		texte.setText(liste.toString());
+		occurrences = Chapitre2CoreJava2.occurrencesDesMots(liste);
+	}
 
 }
